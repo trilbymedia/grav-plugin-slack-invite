@@ -6,7 +6,7 @@ author:
   name: Trilby Media
   email: devs@trilby.media
 homepage: https://github.com/trilbymedia/grav-plugin-slack-invite
-demo: http://demo.yoursite.com
+demo: https://getgrav.org/slack
 keywords: grav, plugin, etc
 bugs: https://github.com/trilbymedia/grav-plugin-slack-invite/issues
 docs: https://github.com/trilbymedia/grav-plugin-slack-invite/blob/develop/README.md
@@ -27,6 +27,15 @@ form:
         type: bool
     cache_timeout:
       type: text
+      size: small
       label: Cache Timeout
       append: seconds
       help: Cache timeout for the user counts in seconds
+      validate:
+        type: number
+        min: 1
+    slack_token:
+      type: text
+      size: x-large
+      label: Slack Token
+      help: You must generate a token from the Slack API site
