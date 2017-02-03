@@ -12,6 +12,9 @@ bugs: https://github.com/trilbymedia/grav-plugin-slack-invite/issues
 docs: https://github.com/trilbymedia/grav-plugin-slack-invite/blob/develop/README.md
 license: MIT
 
+dependencies:
+    - { name: form, version: '~2.0' }
+
 form:
   validation: strict
   fields:
