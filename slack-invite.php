@@ -5,6 +5,7 @@ use Frlnc\Slack\Core\Commander;
 use Frlnc\Slack\Http\CurlInteractor;
 use Frlnc\Slack\Http\SlackResponse;
 use Frlnc\Slack\Http\SlackResponseFactory;
+use Grav\Common\Inflector;
 use Grav\Common\Plugin;
 use RocketTheme\Toolbox\Event\Event;
 
@@ -130,15 +131,19 @@ class SlackInvitePlugin extends Plugin
 
                     /** @var SlackResponse $response */
                     $response = $this->slack->execute('users.admin.invite', [
-                       'email'  => $email
+                        'email'  => $email,
+                        'resend' => true,
                     ]);
 
                     $response_body = $response->getBody();
 
                     if (!$response_body['ok'])
                     {
+                        $inflector = new Inflector();
+                        $message = $inflector->humanize($response_body['error']);
+
                         $form->message_color = 'red';
-                        $form->message = $this->grav['language']->translate(['PLUGIN_SLACKINVITE.API_ERROR', $response_body['error']]);
+                        $form->message = $this->grav['language']->translate(['PLUGIN_SLACKINVITE.API_ERROR', $message]);
                     }
 
                 } else {
