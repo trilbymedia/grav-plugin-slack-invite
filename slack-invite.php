@@ -16,6 +16,9 @@ class SlackInvitePlugin extends Plugin
 {
     protected $slack;
 
+    protected $total_members;
+    protected $active_members;
+
     /**
      * @return array
      *
@@ -52,24 +55,11 @@ class SlackInvitePlugin extends Plugin
         /** @var Commander $commander */
         $this->slack = new Commander($this->config['plugins.slack-invite.slack_token'], $interactor);
 
-        // Enable the main event we are interested in
-        $this->enable([
-            'onTwigPageVariables' => ['onTwigPageVariables', 0],
-            'onFormProcessed' => ['onFormProcessed', 0],
-        ]);
-    }
-
-    /**
-     * get some important information about the team
-     */
-    public function onTwigPageVariables()
-    {
-        $twig = $this->grav['twig'];
         $cache = $this->grav['cache'];
 
-        list($total_members, $active_members) = $cache->fetch('slack_members');
+        list($this->total_members, $this->active_members) = $cache->fetch('slack_members');
 
-        if (!$total_members) {
+        if (!$this->total_members) {
 
             /** @var SlackResponse $response */
             $response = $this->slack->execute('users.list', [
@@ -94,18 +84,31 @@ class SlackInvitePlugin extends Plugin
                     }
                 }, $response_body['members']));
 
-                $active_members = $presences['active'];
-                $total_members = $presences['active'] + $presences['away'];
+                $this->active_members = $presences['active'];
+                $this->total_members = $presences['active'] + $presences['away'];
 
-                $cache->save('slack_members', [$total_members, $active_members], $this->config['plugins.slack-invite.cache_timeout']);
+                $cache->save('slack_members', [$this->total_members, $this->active_members], $this->config['plugins.slack-invite.cache_timeout']);
             }
 
         }
 
-        $twig->twig_vars['slack_active_users'] = $active_members;
-        $twig->twig_vars['slack_total_users'] = $total_members;
 
+        // Enable the main event we are interested in
+        $this->enable([
+            'onTwigPageVariables' => ['onTwigVariables', 0],
+            'onTwigSiteVariables' => ['onTwigVariables', 0],
+            'onFormProcessed' => ['onFormProcessed', 0],
+        ]);
+    }
 
+    /**
+     * get some important information about the team
+     */
+    public function onTwigVariables()
+    {
+        $twig = $this->grav['twig'];
+        $twig->twig_vars['slack_active_users'] = $this->active_members;
+        $twig->twig_vars['slack_total_users'] = $this->total_members;
     }
 
     /**
