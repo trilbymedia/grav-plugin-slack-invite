@@ -142,6 +142,7 @@ class SlackInvitePlugin extends Plugin
                         $inflector = new Inflector();
                         $message = $inflector->humanize($response_body['error']);
 
+                        $form->status = 'error';
                         $form->message_color = 'red';
                         $form->message = $this->grav['language']->translate(['PLUGIN_SLACKINVITE.API_ERROR', $message]);
                     }
