@@ -26,6 +26,8 @@ cache_timeout: 3600
 slack_token: xoxp-XXXXXXXXXXXXX-XXXXXXXXXXXXX-XXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXXXX
 ```
 
+| Note: The `cache_timeout` option configures how long the user counts should remain cached.  This saves continually requesting the values from the API. With cache **off** these will be retreived on every request, and could cause throttling from Slack.
+
 You must generate a Slack token from the [Slack API site](https://api.slack.com/docs/oauth-test-tokens).
 
 ## Usage
@@ -71,5 +73,5 @@ The plugin provides a new `slack-invite` form processing action.  To use it you 
     if you already have an account, [please login to Slack](https://getgrav.slack.com)
 
 
-
+You can use `{{ slack_total_users }}` and `{{ slack_active_users }}` to display the number of total and active members in the Slack team. Bots are removed from the count.
 

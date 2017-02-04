@@ -1,5 +1,5 @@
 name: Slack Invite
-version: 0.1.0
+version: 1.0.0
 description: Easily invite users to Slack
 icon: slack
 author:
@@ -7,7 +7,7 @@ author:
   email: devs@trilby.media
 homepage: https://github.com/trilbymedia/grav-plugin-slack-invite
 demo: https://getgrav.org/slack
-keywords: grav, plugin, etc
+keywords: grav, plugin, slack, chat, invite
 bugs: https://github.com/trilbymedia/grav-plugin-slack-invite/issues
 docs: https://github.com/trilbymedia/grav-plugin-slack-invite/blob/develop/README.md
 license: MIT
