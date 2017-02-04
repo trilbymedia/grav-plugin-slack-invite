@@ -26,7 +26,7 @@ cache_timeout: 3600
 slack_token: xoxp-XXXXXXXXXXXXX-XXXXXXXXXXXXX-XXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXXXX
 ```
 
-| Note: The `cache_timeout` option configures how long the user counts should remain cached.  This saves continually requesting the values from the API. With cache **off** these will be retreived on every request, and could cause throttling from Slack.
+> Note: The `cache_timeout` option configures how long the user counts should remain cached.  This saves continually requesting the values from the API. With cache **off** these will be retreived on every request, and could cause throttling from Slack.
 
 You must generate a Slack token from the [Slack API site](https://api.slack.com/docs/oauth-test-tokens).
 
