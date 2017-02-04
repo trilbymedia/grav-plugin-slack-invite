@@ -1,0 +1,4 @@
+enabled: true
+cache_timeout: 3600
+slack_token: XXX-XXXXXXXXXXXXX-XXXXXXXXXXXXX-XXXXXXXXXXXXX
+

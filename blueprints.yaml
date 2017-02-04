@@ -1,0 +1,44 @@
+name: Slack Invite
+version: 1.0.0
+description: Easily invite users to Slack
+icon: slack
+author:
+  name: Trilby Media
+  email: devs@trilby.media
+homepage: https://github.com/trilbymedia/grav-plugin-slack-invite
+demo: https://getgrav.org/slack
+keywords: grav, plugin, slack, chat, invite
+bugs: https://github.com/trilbymedia/grav-plugin-slack-invite/issues
+docs: https://github.com/trilbymedia/grav-plugin-slack-invite/blob/develop/README.md
+license: MIT
+
+dependencies:
+    - { name: form, version: '~2.0' }
+
+form:
+  validation: strict
+  fields:
+    enabled:
+      type: toggle
+      label: Plugin status
+      highlight: 1
+      default: 0
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool
+    cache_timeout:
+      type: text
+      size: small
+      label: Cache Timeout
+      append: seconds
+      help: Cache timeout for the user counts in seconds
+      validate:
+        type: number
+        min: 1
+    slack_token:
+      type: text
+      size: x-large
+      label: Slack Token
+      help: You must generate a token from the Slack API site

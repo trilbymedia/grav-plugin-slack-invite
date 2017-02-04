@@ -1,0 +1,4 @@
+en:
+  PLUGIN_SLACKINVITE:
+    API_ERROR: "Ooops, something went wrong: [%s]"
+    EMAIL_ERROR: "Missing or invalid email provided"
