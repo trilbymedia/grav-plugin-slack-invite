@@ -127,7 +127,7 @@ class SlackInvitePlugin extends Plugin
             case 'slack-invite':
                 // make sure we have the email
                 $email = $form->value('email');
-                if ($email) {
+                if ($email && $this->isValidUser($email)) {
 
                     /** @var SlackResponse $response */
                     $response = $this->slack->execute('users.admin.invite', [
@@ -157,5 +157,18 @@ class SlackInvitePlugin extends Plugin
 
                 break;
         }
+    }
+
+    protected function isValidUser($email)
+    {
+        $blacklist = (array) $this->config['plugins.slack-invite.blacklist'];
+
+        foreach($blacklist as $var) {
+            if (strpos($email, $var) !== false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

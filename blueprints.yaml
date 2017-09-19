@@ -42,3 +42,11 @@ form:
       size: x-large
       label: Slack Token
       help: You must generate a token from the Slack API site
+
+    blacklist:
+        type: selectize
+        size: large
+        label: Blacklist
+        classes: fancy
+        validate:
+            type: commalist
