@@ -1,5 +1,5 @@
 name: Slack Invite
-version: 1.0.0
+version: 1.0.1
 description: Easily invite users to Slack
 icon: slack
 author:
@@ -11,6 +11,9 @@ keywords: grav, plugin, slack, chat, invite
 bugs: https://github.com/trilbymedia/grav-plugin-slack-invite/issues
 docs: https://github.com/trilbymedia/grav-plugin-slack-invite/blob/develop/README.md
 license: MIT
+
+compatibility:
+  grav: ['1.7', '2.0']
 
 dependencies:
     - { name: form, version: '~2.0' }
@@ -42,3 +45,11 @@ form:
       size: x-large
       label: Slack Token
       help: You must generate a token from the Slack API site
+
+    blacklist:
+        type: selectize
+        size: large
+        label: Blacklist
+        classes: fancy
+        validate:
+            type: commalist

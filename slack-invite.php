@@ -47,6 +47,16 @@ class SlackInvitePlugin extends Plugin
             return;
         }
 
+        // No token configured — skip everything. Without this guard the plugin
+        // would still hit Slack on every frontend request and pay the network
+        // round-trip just to get back a 401, blocking page render for ~200ms.
+        // Also rejects the shipped placeholder ('XXX-XXXX...') that survives
+        // a fresh install when the site owner hasn't yet swapped in their key.
+        $token = $this->config['plugins.slack-invite.slack_token'] ?? '';
+        if (!$token || str_starts_with((string) $token, 'XXX-')) {
+            return;
+        }
+
         // invite the user
         require_once __DIR__ . '/vendor/autoload.php';
 
@@ -54,11 +64,14 @@ class SlackInvitePlugin extends Plugin
         $interactor->setResponseFactory(new SlackResponseFactory);
 
         /** @var Commander $commander */
-        $this->slack = new Commander($this->config['plugins.slack-invite.slack_token'], $interactor);
+        $this->slack = new Commander($token, $interactor);
 
         $cache = $this->grav['cache'];
 
-        list($this->total_members, $this->active_members) = $cache->fetch('slack_members');
+        $cached = $cache->fetch('slack_members');
+        if (is_array($cached) && count($cached) === 2) {
+            [$this->total_members, $this->active_members] = $cached;
+        }
 
         if (!$this->total_members) {
 
@@ -127,7 +140,7 @@ class SlackInvitePlugin extends Plugin
             case 'slack-invite':
                 // make sure we have the email
                 $email = $form->value('email');
-                if ($email) {
+                if ($email && $this->isValidUser($email)) {
 
                     /** @var SlackResponse $response */
                     $response = $this->slack->execute('users.admin.invite', [
@@ -157,5 +170,18 @@ class SlackInvitePlugin extends Plugin
 
                 break;
         }
+    }
+
+    protected function isValidUser($email)
+    {
+        $blacklist = (array) $this->config['plugins.slack-invite.blacklist'];
+
+        foreach($blacklist as $var) {
+            if (strpos((string) $email, (string) $var) !== false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
